@@ -3,7 +3,7 @@ import Todo from "./Todo";
 
 export default function TodoList({ todoList, toggleCompleted, handleRemove }) {
   return (
-    <div className="mt-5 text-light">
+    <div className="mt-3 text-light">
       {todoList.map((todo) => (
         <Todo
           key={todo.id}

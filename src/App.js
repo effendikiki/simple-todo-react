@@ -34,15 +34,15 @@ function App() {
 
   function toggleCompleted(id) {
     const tempTodos = [...todos];
-    const toggledTodo = tempTodos.find((todo) => todo.id === id);
-    toggledTodo.isCompleted = !toggledTodo.isCompleted;
+    const filteredTodo = tempTodos.find((todo) => todo.id === id);
+    filteredTodo.isCompleted = !filteredTodo.isCompleted;
 
     setTodos(tempTodos);
   }
 
   function handleClear() {
-    const tempTodos = todos.filter((todo) => !todo.isCompleted);
-    setTodos(tempTodos);
+    const clear = window.confirm("Are you sure to clear this list?");
+    if (clear) setTodos([]);
   }
 
   function handleRemove(id) {
@@ -53,28 +53,65 @@ function App() {
 
   return (
     <div className="min-vh-100 min-vw-100 bg-dark d-flex justify-content-center align-items-center">
-      <div className="container m-5 row">
-        <div className="col-3">
-          <input ref={todoNameRef} type="text" className="form-control" />
+      <div
+        className="container m-5 shadow-lg row card"
+        style={{
+          backgroundColor: "rgba(50,50,50,0.5)",
+        }}
+      >
+        <div className="my-3 text-light card-header">
+          <h3>Todo Apps</h3>
         </div>
-        <div className="gap-2 col-3 d-flex">
-          <button onClick={handleAdd} className="btn btn-primary">
-            Add
-          </button>
-          <button className="btn btn-success" onClick={handleClear}>
-            Clear Done
-          </button>
+
+        <div className="card-body row">
+          <div className="col-12 col-md-6 row">
+            <div className="col-12 col-md-8">
+              <input
+                ref={todoNameRef}
+                type="text"
+                className="form-control"
+                placeholder=""
+              />
+            </div>
+            <div className="gap-2 mt-3 col-md-4 col-12 d-flex mt-md-0 justify-content-end">
+              <button onClick={handleAdd} className="btn btn-primary">
+                Add
+              </button>
+              <button className="btn btn-danger" onClick={handleClear}>
+                Clear
+              </button>
+            </div>
+          </div>
         </div>
-        <div className="col-12">
-          <h5 className="mt-5 text-white">
-            {" "}
-            {todos.filter((todo) => !todo.isCompleted).length} Task Left
-          </h5>
-          <TodoList
-            todoList={todos}
-            toggleCompleted={toggleCompleted}
-            handleRemove={handleRemove}
-          />
+
+        <div className="mt-3 card-body row">
+          <div className="col-12 col-md-6">
+            <div>
+              <h5 className="pb-2 text-white border-bottom border-light">
+                {" "}
+                {todos.filter((todo) => !todo.isCompleted).length} Task Left
+              </h5>
+              <TodoList
+                todoList={todos.filter((todo) => !todo.isCompleted)}
+                toggleCompleted={toggleCompleted}
+                handleRemove={handleRemove}
+              />
+            </div>
+          </div>
+
+          <div className="mt-3 mt-md-0 col-12 col-md-6">
+            <div>
+              <h5 className="pb-2 text-white border-bottom border-primary">
+                {" "}
+                {todos.filter((todo) => todo.isCompleted).length} Task Done
+              </h5>
+              <TodoList
+                todoList={todos.filter((todo) => todo.isCompleted)}
+                toggleCompleted={toggleCompleted}
+                handleRemove={handleRemove}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
